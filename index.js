@@ -48,8 +48,8 @@ const generateHTML = ({}) =>
   <title>Team Profile</title>
 </head>
 <body>
-    <header class="p-5 mb-4 header bg-light" style="text-align: center">
-        <h1 class="display-4">My Team</h1>
+    <header class="p-5 mb-4 header bg-dark" style="text-align: center">
+        <h1 class="display-4 text-white">My Team</h1>
     </header>
     <div class="container">
         <main>
