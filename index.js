@@ -1,14 +1,51 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern')
 
-const generateHTML = ({ name, employeeId, email, officeNumber }) =>
+const manager = new Manager('Siera', 55, 'abc', 12)
+const engineer = new Engineer('Joey', 55, 'abc', 12)
+const intern = new Intern('Bailey', 55, 'abc', 12)
+
+function renderEngineer() {
+    return `
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+            <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${engineer.name}</h2>
+            <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">Engineer</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">${engineer.id}</li>
+                <li class="list-group-item">${engineer.email}</li>
+                <li class="list-group-item">${engineer.github}</li>
+            </ul>
+        </div>
+    </div>`
+}
+
+function renderIntern() {
+    return `
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+            <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${intern.name}</h2>
+            <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">Intern</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">${intern.id}</li>
+                <li class="list-group-item">${intern.email}</li>
+                <li class="list-group-item">${intern.school}</li>
+            </ul>
+        </div>
+    </div>`
+}
+
+const generateHTML = ({}) =>
   `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-  <title>Document</title>
+  <title>Team Profile</title>
 </head>
 <body>
     <header class="p-5 mb-4 header bg-light" style="text-align: center">
@@ -17,17 +54,19 @@ const generateHTML = ({ name, employeeId, email, officeNumber }) =>
     <div class="container">
         <main>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col">
                     <div class="card" style="width: 18rem;">
-                        <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${name}</h2>
-                        <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">Manager</h3>
+                        <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${manager.name}</h2>
+                        <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">${manager.getRole()}</h3>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">${employeeId}</li>
-                            <li class="list-group-item">${email}</li>
-                            <li class="list-group-item">${officeNumber}</li>
+                            <li class="list-group-item">${manager.id}</li>
+                            <li class="list-group-item">${manager.email}</li>
+                            <li class="list-group-item">${manager.officeNumber}</li>
                         </ul>
                     </div>
                 </div>
+                ${renderEngineer()}
+                ${renderIntern()}
             </div>
         </main>
     </div>
@@ -67,7 +106,7 @@ const questions = [
 // Function to write README file
 function writeToFile(fileName, data) {
     fs.writeFile(fileName, data, (err) =>
-    err ? console.log(err) : console.log('Successfully created README.md!')
+    err ? console.log(err) : console.log('Successfully created index.html!')
   )
 }
   
