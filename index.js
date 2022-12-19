@@ -56,6 +56,12 @@ const questions = [
       name: 'officeNumber',
       message: 'What is the team manager\'s office number?',
     },
+    {
+        type: 'list',
+        name: 'menu',
+        message: 'What would you like to do next?',
+        choices: [ "Add an engineer", "Add an intern", "Finish building team"]
+      },
   ]
 
 // Function to write README file
