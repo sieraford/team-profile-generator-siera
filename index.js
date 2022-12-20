@@ -4,39 +4,9 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern')
 
-const manager = new Manager('Siera', 55, 'abc', 12)
-const engineer = new Engineer('Joey', 55, 'abc', 12)
-const intern = new Intern('Bailey', 55, 'abc', 12)
-
-function renderEngineer() {
-    return `
-    <div class="col">
-        <div class="card" style="width: 18rem;">
-            <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${engineer.name}</h2>
-            <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">Engineer</h3>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">${engineer.id}</li>
-                <li class="list-group-item">${engineer.email}</li>
-                <li class="list-group-item">${engineer.github}</li>
-            </ul>
-        </div>
-    </div>`
-}
-
-function renderIntern() {
-    return `
-    <div class="col">
-        <div class="card" style="width: 18rem;">
-            <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${intern.name}</h2>
-            <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">Intern</h3>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">${intern.id}</li>
-                <li class="list-group-item">${intern.email}</li>
-                <li class="list-group-item">${intern.school}</li>
-            </ul>
-        </div>
-    </div>`
-}
+let manager = new Manager()
+let engineer = new Engineer()
+let intern = new Intern()
 
 const generateHTML = ({}) =>
   `<!DOCTYPE html>
@@ -65,8 +35,8 @@ const generateHTML = ({}) =>
                         </ul>
                     </div>
                 </div>
-                ${renderEngineer()}
-                ${renderIntern()}
+                ${engineer.renderEngineer()}
+                ${intern.renderIntern()}
             </div>
         </main>
     </div>
@@ -74,49 +44,42 @@ const generateHTML = ({}) =>
 
 </html>`;
 
-const questions = [
-    {
-      type: 'input',
-      name: 'name',
-      message: 'What is the team manager\'s name?',
-    },
-    {
-      type: 'input',
-      name: 'employeeId',
-      message: 'What is the team manager\'s employee ID?',
-    },
-    {
-      type: 'input',
-      name: 'email',
-      message: 'What is the team manager\'s email address?',
-    },
-    {
-      type: 'input',
-      name: 'officeNumber',
-      message: 'What is the team manager\'s office number?',
-    },
-    {
-        type: 'list',
-        name: 'menu',
-        message: 'What would you like to do next?',
-        choices: [ "Add an engineer", "Add an intern", "Finish building team"]
-      },
-  ]
-
 // Function to write README file
 function writeToFile(fileName, data) {
     fs.writeFile(fileName, data, (err) =>
     err ? console.log(err) : console.log('Successfully created index.html!')
   )
 }
+
+function checkMenuSelection(answers){
+    if(answers.menu == "Add an engineer") {
+        inquirer
+        .prompt(engineer.questions)
+        .then((answers) => {
+           engineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
+           checkMenuSelection(answers)
+        })
+    } else if(answers.menu == "Add an intern") {
+        inquirer
+        .prompt(intern.questions)
+        .then((answers) => {
+            intern = new Intern(answers.name, answers.id, answers.email, answers.school)
+            checkMenuSelection(answers)
+
+        }) 
+    } else {
+        const htmlPageContent = generateHTML(answers);
+        writeToFile('index.html', htmlPageContent)
+    }
+}
   
 // Function to initialize app
 function init() {
     inquirer
-    .prompt(questions)
+    .prompt(manager.questions)
     .then((answers) => {
-         const htmlPageContent = generateHTML(answers);
-         writeToFile('index.html', htmlPageContent)
+       manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+       checkMenuSelection(answers)
     });
 }
   
