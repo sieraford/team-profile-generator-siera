@@ -8,6 +8,25 @@ let manager = new Manager()
 let engineer = new Engineer()
 let intern = new Intern()
 
+const engineers = []
+const interns = []
+
+function renderEngineers() {
+    let engineersHTML = ""
+    for(i=0; i < engineers.length; i++) {
+        engineersHTML +=  engineers[i].renderEngineer()
+    }
+    return engineersHTML
+}
+
+function renderInterns() {
+    let internsHTML = ""
+    for(i=0; i < interns.length; i++) {
+        internsHTML += interns[i].renderIntern()
+    }
+    return internsHTML
+}
+
 const generateHTML = ({}) =>
   `<!DOCTYPE html>
 <html lang="en">
@@ -35,8 +54,8 @@ const generateHTML = ({}) =>
                         </ul>
                     </div>
                 </div>
-                ${engineer.renderEngineer()}
-                ${intern.renderIntern()}
+                ${renderEngineers()}
+                ${renderInterns()}
             </div>
         </main>
     </div>
@@ -56,15 +75,19 @@ function checkMenuSelection(answers){
         inquirer
         .prompt(engineer.questions)
         .then((answers) => {
-           engineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
+           let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github)
+           engineers.push(engineer)
            checkMenuSelection(answers)
+           return engineers
         })
     } else if(answers.menu == "Add an intern") {
         inquirer
         .prompt(intern.questions)
         .then((answers) => {
-            intern = new Intern(answers.name, answers.id, answers.email, answers.school)
+            let intern = new Intern(answers.name, answers.id, answers.email, answers.school)
+            interns.push(intern)
             checkMenuSelection(answers)
+            return interns
 
         }) 
     } else {
