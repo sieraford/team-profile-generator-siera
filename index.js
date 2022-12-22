@@ -44,13 +44,15 @@ const generateHTML = ({}) =>
         <main>
             <div class="row">
                 <div class="col">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" style="width: 18rem;margin-bottom: 3rem;">
                         <h2 class="card-title" style="padding-left: 1rem;padding-top: 0.5rem;">${manager.name}</h2>
                         <h3 class="card-subtitle mb-2 text-muted" style="padding-left: 1rem">${manager.getRole()}</h3>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">${manager.id}</li>
-                            <li class="list-group-item">${manager.email}</li>
-                            <li class="list-group-item">${manager.officeNumber}</li>
+                            <li class="list-group-item">ID: ${manager.id}</li>
+                            <li class="list-group-item">Email: 
+                                <a href=mailto:${manager.email}>${manager.email}</a>
+                            </li>
+                            <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
                         </ul>
                     </div>
                 </div>
